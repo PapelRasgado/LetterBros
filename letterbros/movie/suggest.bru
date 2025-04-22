@@ -1,0 +1,19 @@
+meta {
+  name: suggest
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8000/movies
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "tmdb_id": 718940,
+    "title": "Bullet Train 2",
+    "poster_url": "/j8szC8OgrejDQjjMKSVXyaAjw3V.jpg"
+  }
+}

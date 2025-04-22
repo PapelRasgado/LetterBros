@@ -1,0 +1,24 @@
+meta {
+  name: update status
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8000/movies/:id/status/:status
+  body: none
+  auth: inherit
+}
+
+params:path {
+  status: watchlist
+  id: 5
+}
+
+body:json {
+  {
+    "tmdb_id": 718939,
+    "title": "Bullet Train",
+    "poster_url": "/j8szC8OgrejDQjjMKSVXyaAjw3V.jpg"
+  }
+}

@@ -1,0 +1,26 @@
+meta {
+  name: signup
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8000/auth/signup
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "jp",
+    "email": "joao@gmail.com",
+    "password": "123456",
+    "invite_code": "JMGAY123"
+  }
+}
+
+body:multipart-form {
+  username: jp
+  email: joao@gmail.com
+  password: 123456
+}

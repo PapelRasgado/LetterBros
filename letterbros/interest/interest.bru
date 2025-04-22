@@ -1,0 +1,15 @@
+meta {
+  name: interest
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8000/movies/:movie_id/interest
+  body: none
+  auth: inherit
+}
+
+params:path {
+  movie_id: 5
+}

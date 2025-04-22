@@ -1,0 +1,15 @@
+meta {
+  name: find
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:8000/users/:user_id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  user_id: 1
+}

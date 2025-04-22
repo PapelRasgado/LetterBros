@@ -1,0 +1,16 @@
+meta {
+  name: list
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8000/movies/suggestion?order_by=created_at&order_direction=desc
+  body: none
+  auth: inherit
+}
+
+params:query {
+  order_by: created_at
+  order_direction: desc
+}

@@ -1,0 +1,30 @@
+meta {
+  name: signin
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8000/auth/signin
+  body: multipartForm
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "jp",
+    "email": "joao@gmail.com",
+    "password": "123456"
+  }
+}
+
+body:multipart-form {
+  username: jp
+  password: 123456
+}
+
+script:post-response {
+  let data = res.body;
+  bru.setEnvVar("token", data.access_token);
+  
+}
