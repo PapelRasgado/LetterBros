@@ -1,0 +1,15 @@
+meta {
+  name: delete rate
+  type: http
+  seq: 2
+}
+
+delete {
+  url: http://localhost:8000/movies/:id/rating
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 5
+}

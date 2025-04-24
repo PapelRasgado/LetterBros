@@ -4,7 +4,7 @@ from app.models import User, UserCreate
 
 
 def get_user_by_email_or_username(session: Session, email: str, username: str) -> User | None:
-    return session.exec(select(User).where(User.email == email or User.username == username)).first()
+    return session.exec(select(User).where(User.email == email, User.username == username)).first()
 
 
 def get_user_by_username(session: Session, username: str) -> User | None:
@@ -22,3 +22,11 @@ def create_user(session: Session, user: UserCreate) -> User:
     session.commit()
     session.refresh(user_db)
     return user_db
+
+
+def update_user(session: Session, user: User) -> User:
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+
+    return user

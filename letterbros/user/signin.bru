@@ -22,9 +22,3 @@ body:multipart-form {
   username: jp
   password: 123456
 }
-
-script:post-response {
-  let data = res.body;
-  bru.setEnvVar("token", data.access_token);
-  
-}

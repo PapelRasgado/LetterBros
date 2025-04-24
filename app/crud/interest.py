@@ -6,7 +6,7 @@ from app.models import MovieInterest, User
 
 
 def get_interest_by_id_and_user(session: Session, movie_id: int, user_id: int) -> MovieInterest | None:
-    return session.exec(select(MovieInterest).where(MovieInterest.movie_id == movie_id and MovieInterest.user_id == user_id)).first()
+    return session.exec(select(MovieInterest).where(MovieInterest.movie_id == movie_id, MovieInterest.user_id == user_id)).first()
 
 
 def get_users_by_movie_interest(session: Session, movie_id: int) -> Sequence[User]:

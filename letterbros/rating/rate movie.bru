@@ -1,0 +1,21 @@
+meta {
+  name: rate movie
+  type: http
+  seq: 1
+}
+
+put {
+  url: http://localhost:8000/movies/:id/rating
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 5
+}
+
+body:json {
+  {
+    "rating": 2
+  }
+}

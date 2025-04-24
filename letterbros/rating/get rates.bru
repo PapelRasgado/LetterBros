@@ -1,0 +1,15 @@
+meta {
+  name: get rates
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8000/movies/:id/ratings
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 5
+}

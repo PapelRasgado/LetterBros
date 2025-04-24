@@ -12,11 +12,6 @@ class MovieStatus(str, Enum):
     watched = "watched"
 
 
-class Token(SQLModel):
-    access_token: str
-    token_type: str
-
-
 class UserBase(SQLModel):
     username: str = Field(index=True, min_length=2, max_length=30)
     email: EmailStr = Field(unique=True, index=True)
@@ -37,6 +32,29 @@ class UserCreate(UserBase):
 class UserPublic(UserBase):
     id: int
     created_at: datetime
+
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
+
+
+class PasswordResetToken(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id")
+    token: str = Field(index=True, unique=True)
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    expires_at: datetime
+    used: bool = Field(default=False)
+
+
+class PasswordResetEmail(BaseModel):
+    email: EmailStr
+
+
+class PasswordReset(BaseModel):
+    password: str = Field(min_length=6)
+    token: str
 
 
 class MovieBase(SQLModel):
@@ -73,22 +91,27 @@ class MovieInterest(MovieInterestBase, table=True):
 
 
 class MovieRatingBase(SQLModel):
-    user_id: int = Field(default=None, foreign_key="user.id")
-    movie_id: int = Field(default=None, foreign_key="movie.id")
     rating: int = Field(ge=1, le=10)
 
 
 class MovieRating(MovieRatingBase, table=True):
     __table_args__ = (
-        CheckConstraint("rating >= 1 AND rating <= 5", name="check_rating_range"),
+        CheckConstraint("rating >= 1 AND rating <= 10", name="check_rating_range"),
     )
 
     id: int | None = Field(default=None, primary_key=True, index=True)
+    user_id: int = Field(default=None, foreign_key="user.id")
+    movie_id: int = Field(default=None, foreign_key="movie.id")
     rated_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
 
 
 class MovieRatingCreate(MovieRatingBase):
     model_config = ConfigDict(extra="forbid")
+
+
+class MovieRatingSummary(SQLModel):
+    rating_count: int | None
+    rating_average: float | None
 
 
 class FilterParams(BaseModel):
