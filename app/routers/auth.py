@@ -9,7 +9,7 @@ from sqlmodel import Session
 
 from app.auth import get_password_hash, authenticate_user, create_access_token, create_refresh_token, verify_token
 from app.crud.auth import create_recovery_token, get_reset_by_token
-from app.crud.user import get_user_by_email_or_username, create_user, get_user_by_id, update_user
+from app.crud.user import get_user_by_email_or_username, create_user, get_user_by_id, update_user, get_user_by_email
 from app.database import get_session
 from app.models import UserPublic, UserCreate, PasswordResetEmail, PasswordReset
 
@@ -43,7 +43,7 @@ def signin(
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password"
+            detail="Username ou senha incorretas"
         )
 
     access_token = create_access_token(data={"sub": user.username})
@@ -57,7 +57,7 @@ def signin(
 def refresh(response: Response, refresh_token: str = Cookie(None)):
     data = verify_token(refresh_token)
     if not data:
-        raise HTTPException(status_code=401, detail="Invalid refresh token")
+        raise HTTPException(status_code=401, detail="Token de atualização inválido")
 
     new_access = create_access_token({"sub": data["sub"]})
     response.set_cookie("access_token", new_access, httponly=True, max_age=1800)
@@ -67,12 +67,12 @@ def refresh(response: Response, refresh_token: str = Cookie(None)):
 def logout(response: Response):
     response.delete_cookie("access_token")
     response.delete_cookie("refresh_token")
-    return {"message": "Logged out"}
+    return {"message": "Deslogado com sucesso!"}
 
 
 @router.post("/forgot-password", status_code=status.HTTP_200_OK)
 def forgot_password(reset_email: PasswordResetEmail, session: Session = Depends(get_session)):
-    user = get_user_by_email_or_username(session, reset_email.email, "")
+    user = get_user_by_email(session, reset_email.email)
     if user:
         token = uuid4().hex
 

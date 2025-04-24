@@ -15,8 +15,6 @@ from app.models import User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
 load_dotenv()
 SECRET_KEY = os.getenv("JWT_KEY")
 ALGORITHM = "HS256"
@@ -63,10 +61,11 @@ def verify_token(token: str):
 def get_current_user(session: Session = Depends(get_session), access_token: str = Cookie(None)) -> User:
     data = verify_token(access_token)
     if not data:
-        raise HTTPException(status_code=401, detail="Invalid token")
+        raise HTTPException(status_code=401, detail="Token inválido")
 
     user = get_user_by_username(session, data["sub"])
 
     if not user:
-        raise HTTPException(status_code=401, detail="User not found")
+        raise HTTPException(status_code=401, detail="Usuario não encontrado")
+
     return user
